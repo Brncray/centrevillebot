@@ -12,6 +12,9 @@ async def print_messages(event):
 
 
 @plugin.command
+@lightbulb.add_checks(
+  lightbulb.has_roles(1184863530504163328)
+)
 @lightbulb.option("reactions", "How many reactions are required", type=int, required=True)
 @lightbulb.command('session', 'Host a session')
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)

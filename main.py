@@ -42,7 +42,7 @@ async def on_error(event: lightbulb.CommandErrorEvent) -> None:
 
 
 bot.load_extensions_from('extensions/session')
-
+bot.load_extensions_from('extensions/')
 
 
 
@@ -52,9 +52,8 @@ bot.load_extensions_from('extensions/session')
 bot.run(
     status=hikari.Status.ONLINE,
     activity=hikari.Activity(
-        name="Watching sessions",
-        url="https://discord.gg/centreville",
-        type=hikari.ActivityType.STREAMING,
+        name="discord.gg/centreville",
+        type=hikari.ActivityType.WATCHING,
     ),
 )
 

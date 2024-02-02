@@ -8,6 +8,9 @@ bo = None
 
 
 @plugin.command
+@lightbulb.add_checks(
+  lightbulb.has_roles(1184863530504163328)
+)
 @lightbulb.command('early', 'early')
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
 async def cmd(ctx):
