@@ -1,0 +1,68 @@
+import lightbulb
+import hikari
+import flare
+from tinydb import TinyDB, Query
+plugin = lightbulb.Plugin('session', 'host a session')
+
+bo = None
+server = TinyDB('server.json')
+
+@flare.button(label="Early Access", style=hikari.ButtonStyle.PRIMARY)
+async def earlyaccess(
+    ctx: flare.MessageContext,
+) -> None:
+    await ctx.respond(content="Insert early access stuff")
+
+@flare.button(label="End", style=hikari.ButtonStyle.DANGER)
+async def end(
+    ctx: flare.MessageContext,
+) -> None:
+    await ctx.respond(content="Insert end session here")
+
+@flare.button(label="Peacetime Normal", style=hikari.ButtonStyle.DANGER)
+async def peacetimen(
+    ctx: flare.MessageContext,
+) -> None:
+    await ctx.respond(content="Insert end session here")
+
+@flare.button(label="Peacetime Strict", style=hikari.ButtonStyle.DANGER)
+async def peacetimes(
+    ctx: flare.MessageContext,
+) -> None:
+    await ctx.respond(content="Insert end session here")
+
+
+@plugin.command
+@lightbulb.option('reactions', description="how many reactions", type=int, required=True)
+@lightbulb.command('session', 'Host a session!')
+@lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
+async def cmd(ctx):
+    server = TinyDB('server.json')
+    query = Query()
+    channel = ctx.channel_id
+
+    # check channel
+
+
+    row = await flare.Row(earlyaccess())
+    host_panel = await flare.Row(end(), peacetimen(), peacetimes())
+    response = hikari.Embed(
+        title=f"{ctx.author.username} is hosting a session!",
+        description=f"{ctx.options.reactions}+ reactions are required for startup",
+        color="#2a2d31"
+    )
+
+    host_controls = hikari.Embed(
+        title="Host Controls",
+        color="#2a2d31"
+    )
+
+    await ctx.respond("insert everyone ping", embed=response, component=row)
+    await ctx.respond(embed=host_controls, component=host_panel, flags=hikari.MessageFlag.EPHEMERAL)
+
+
+def load(bot):
+    global bo
+    bo = bot
+    bot.add_plugin(plugin)
+    print("Successfully loaded")
