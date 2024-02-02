@@ -7,7 +7,7 @@ import os
 
 
 bot = lightbulb.BotApp(
-    token='',
+    token=os.environ['token'],
     intents=hikari.Intents.ALL,
     prefix="-"
 )
