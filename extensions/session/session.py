@@ -37,7 +37,7 @@ async def host(ctx):
 
 
 
-    message = await ctx.respond("@everyone", embed=embed, mentions_everyone=False)
+    message = await ctx.respond("@everyone", embed=embed, mentions_everyone=True)
     msg = await message.message()
     await msg.add_reaction(":Thumbup1:1153703169545752607")
 
