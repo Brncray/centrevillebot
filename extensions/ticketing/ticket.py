@@ -82,7 +82,23 @@ async def cmd(ctx):
             'vehicles': [],
             'license': False
         })
-        await ctx.respond(f'Ticketed <@{user.id}> for: {charges}', flags=hikari.MessageFlag.EPHEMERAL)
+        dm_channel = bo.cache.get_dm_channel_id(user.id) # from cache
+        dm_channel = await bo.rest.create_dm_channel(user.id) # from rest api; more reliable. store this for later uses
+        ...
+  
+        # when you want to send the message
+        emb = hikari.Embed(
+          title="Citation Recieved",
+          description=f"Penal Codes: **{charges}**\nDepartment: {ctx.options.dep}\nOfficer: {prefix}<@{ctx.author.id}>\nDue: {due}",
+          color="#2a2d31"
+        )
+        await dm_channel.send(embed=emb)
+        emb = hikari.Embed(
+          title="Citation Sent",
+          description=f"Penal Codes: **{charges}**\nDepartment: {ctx.options.dep}\nOfficer: {prefix}<@{ctx.author.id}>\nDue: {due}",
+          color="#2a2d31"
+        )
+        await ctx.respond(embed=emb, flags=hikari.MessageFlag.EPHEMERAL)
         return
     upd = {
       'charges': charges,
@@ -91,7 +107,23 @@ async def cmd(ctx):
       'Amount due': f"Due: {due}"
 }
     records.update_one({'user_id': user.id}, {'$push': {'citations':upd}})
-    await ctx.respond(f'Ticketed <@{user.id}> for: {charges}', flags=hikari.MessageFlag.EPHEMERAL)
+    dm_channel = bo.cache.get_dm_channel_id(user.id) # from cache
+    dm_channel = await bo.rest.create_dm_channel(user.id) # from rest api; more reliable. store this for later uses
+    ...
+  
+    # when you want to send the message
+    emb = hikari.Embed(
+      title="Citation Recieved",
+      description=f"Penal Codes: **{charges}**\nDepartment: {ctx.options.dep}\nOfficer: {prefix}<@{ctx.author.id}>\nDue: {due}",
+      color="#2a2d31"
+    )
+    await dm_channel.send(embed=emb)
+    emb = hikari.Embed(
+      title="Citation Sent",
+      description=f"Penal Codes: **{charges}**\nDepartment: {ctx.options.dep}\nOfficer: {prefix}<@{ctx.author.id}>\nDue: {due}",
+      color="#2a2d31"
+    )
+    await ctx.respond(embed=emb, flags=hikari.MessageFlag.EPHEMERAL)
 
 
 def load(bot):

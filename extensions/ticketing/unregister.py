@@ -37,8 +37,12 @@ async def cmd(ctx):
     result = records.update_one(query, update)
   
     
-  
-    await ctx.respond(f'Removed registration with the ID: {ctx.options.id}', flags=hikari.MessageFlag.EPHEMERAL)
+    response = hikari.Embed(
+      title="Vehicle Removed",
+      description=f"Removed registration for the vehicle with the ID: {ctx.options.id}",
+      color="#2a2d31"
+    )
+    await ctx.respond(response, flags=hikari.MessageFlag.EPHEMERAL)
 
 
 

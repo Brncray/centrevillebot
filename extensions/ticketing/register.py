@@ -62,7 +62,7 @@ async def cmd(ctx):
     .add_field('License:', value=ctx.options.license, inline=True)
     .add_field('Color:', value=ctx.options.color, inline=True)
     )
-    await ctx.respond(response, flags=hikari.MessageFlag.EPHMERAL)
+    await ctx.respond(response, flags=hikari.MessageFlag.EPHEMERAL)
 
 
 def load(bot):
