@@ -2,45 +2,67 @@ import lightbulb
 import hikari
 import flare
 from pymongo import MongoClient
+import asyncio
 
 plugin = lightbulb.Plugin('', '')
 
 bo = None
 client = MongoClient("mongodb+srv://brncray:Bobrien@bot.lvf7vud.mongodb.net/?retryWrites=true&w=majority")
+wsp = 1203078168282406912
 
 @flare.button(label="Registered Vehicles", style=hikari.ButtonStyle.PRIMARY)
 async def registered(
     ctx: flare.MessageContext,
     user_id: int
 ) -> None:
-
+    has_roles = False
+    if wsp in ctx.member.role_ids:
+      has_roles = True
+      
+    if user_id != ctx.author.id and has_roles == False:
+      await ctx.respond('You can not view this user\'s profile!', flags=hikari.MessageFlag.EPHEMERAL)
+      return
     db = client.get_database('data')
     records = db.ticketing
     resp = records.find_one({'user_id': user_id})
     arr = resp.get("vehicles", [])
     string = ""
-    labels = [
-        'Model:',
-        'License Plate:',
-        'Color:'
-    ]
-    for outer_array in arr:
-        for element_index, inner_array in enumerate(outer_array):
-            if element_index == 0:
-                inner_array = f"**{inner_array}**"
-            if element_index == 2:
-                inner_array = f"{inner_array}\n-----------"
-
-            label = labels[element_index]
-            string = string + f"\n{label} {inner_array}"
-    response = (hikari.Embed(
-        title=f"Registered Vehicles",
-        description=f"{string}",
-        color="#2a2d31"
-    ).set_footer(text="Centreville Roleplay", icon=bo.get_me().avatar_url)
-    )
-    await ctx.respond(response, flags=hikari.MessageFlag.EPHEMERAL)
-
+    documents = records.find({'user_id': user_id})
+    for document in documents:
+      # Access the array field
+      array_field = document.get("vehicles")  # Replace "array_field_name" with the name of your array field
+  
+      # Check if the array field exists and is not empty
+      if array_field:
+        # Iterate over each object in the array
+        for obj in array_field:
+            first_item = True
+            # Iterate over each field in the object
+            try:
+              for key, value in obj.items():
+  
+                  if first_item:
+                    value = f"**{value}**"
+                    first_item = False
+                  # Concatenate each field and value into the result string
+                  string += f"{key}: {value}\n"
+              string += "-------------------------\n"
+            except AttributeError:
+              await ctx.respond(
+                hikari.Embed(
+                  title="Citations",
+                  description="No vehicles found!", 
+                  color="#2a2d31"
+                ), flags=hikari.MessageFlag.EPHEMERAL
+              )
+              return
+        response = (hikari.Embed(
+          title=f"Registered Vehicles",
+          description=f"{string}",
+          color="#2a2d31"
+        ).set_footer(text="Centreville Roleplay", icon=bo.get_me().avatar_url)
+        )
+        await ctx.respond(response, flags=hikari.MessageFlag.EPHEMERAL)
 @flare.button(label="Citations", style=hikari.ButtonStyle.PRIMARY)
 async def citations(
     ctx: flare.MessageContext,
@@ -52,21 +74,37 @@ async def citations(
     resp = records.find_one({'user_id': user_id})
     arr = resp.get("citations", [])
     string = ""
-    labels = [
-        '**Charges:**',
-        'Officer:',
-        'Department:',
-        'Amount:'
-    ]
 
-    for outer_array in arr:
-        for element_index, inner_array in enumerate(outer_array):
-            if element_index == 0:
-                inner_array = f"**{inner_array}**"
-            if element_index == 3:
-                inner_array = f"{inner_array}\n-----------------------------------"
-            label = labels[element_index]
-            string = string + f"\n{label} {inner_array}"
+    documents = records.find({'user_id': user_id})
+    for document in documents:
+      # Access the array field
+      array_field = document.get("citations")  # Replace "array_field_name" with the name of your array field
+    
+      # Check if the array field exists and is not empty
+      if array_field:
+        # Iterate over each object in the array
+        for obj in array_field:
+            first_item = True
+            # Iterate over each field in the object
+            try:
+              for key, value in obj.items():
+                
+                  if first_item:
+                    value = f"**{value}**"
+                    first_item = False
+                  # Concatenate each field and value into the result string
+                  string += f"{key}: {value}\n"
+              string += "-------------------------\n"
+            except AttributeError:
+              await ctx.respond(
+                hikari.Embed(
+                  title="Citations",
+                  description="No citations found!", 
+                  color="#2a2d31"
+                ), flags=hikari.MessageFlag.EPHEMERAL
+              )
+              return
+  
     response = (hikari.Embed(
         title=f"Citations",
         description=f"{string}",
@@ -88,13 +126,15 @@ async def cmd(ctx):
     except Exception:
         pass
     if ctx.options.user is None:
-        user = ctx.author
+      user = ctx.author
     elif ctx.options is not None:
-        user = ctx.options.user
+      user = ctx.options.user
 
     resp = records.find_one({'user_id': user.id})
     row = await flare.Row(registered(user.id), citations(user.id))
+
     if resp is None:
+      
         response = (hikari.Embed(
             title=f"{user}'s profile",
             description="No profile found. What does this mean?\n\n> The user does not exist within the database. ",
@@ -118,15 +158,6 @@ async def cmd(ctx):
         name="License",
         value=license,
         inline=True
-    )
-    .add_field(
-        name="Registered Vehicles",
-        value=f"{resp['vehicles'].count(resp['vehicles'])}",
-        inline=True
-    )
-    .add_field(
-        name="Citations",
-        value=f"{resp['citations'].count(resp['citations'])}"
     )
     .set_footer(text="Centreville Roleplay", icon=bo.get_me().avatar_url)
     )

@@ -73,23 +73,23 @@ async def cmd(ctx):
     if resp is None:
         records.insert_one({
             'user_id': user.id,
-            'citations': [[
-                charges,
-                f"{prefix}<@{ctx.author.id}>",
-                ctx.options.dep,
-                f"Due: {due}"
-            ]],
+            'citations': [{
+                'charges': charges,
+                'Ticketed by': f"{prefix}<@{ctx.author.id}>",
+                'Department': ctx.options.dep,
+                'Amount due': f"Due: {due}"
+            }],
             'vehicles': [],
             'license': False
         })
         await ctx.respond(f'Ticketed <@{user.id}> for: {charges}', flags=hikari.MessageFlag.EPHEMERAL)
         return
-    upd = [
-        charges,
-        f"{prefix}<@{ctx.author.id}>",
-        ctx.options.dep,
-        f"{due}"
-    ]
+    upd = {
+      'charges': charges,
+      'Ticketed by': f"{prefix}<@{ctx.author.id}>",
+      'Department': ctx.options.dep,
+      'Amount due': f"Due: {due}"
+}
     records.update_one({'user_id': user.id}, {'$push': {'citations':upd}})
     await ctx.respond(f'Ticketed <@{user.id}> for: {charges}', flags=hikari.MessageFlag.EPHEMERAL)
 
