@@ -16,9 +16,9 @@ client = MongoClient(
 async def reset(ctx: flare.MessageContext, ) -> None:
   db = client.get_database('data')
   records = db.ticketing
-  update = {"$set": {"citations": []}}
+  update = {"$set": {"citations": [{}]}}
   records.update_many({}, update)
-  update = {"$set": {"vehicles": []}}
+  update = {"$set": {"vehicles": [{}]}}
   records.update_many({}, update)
   await ctx.respond('Database has been reset',
                     flags=hikari.MessageFlag.EPHEMERAL)
@@ -33,7 +33,7 @@ async def cmd(ctx):
 
   emb = hikari.Embed(
       title="Confirm Deletion",
-      description="Are you sure you want to reset the database?",
+      description="Are you sure you want to reset the database? This will **permanently delete** all citations and registered vehicles",
       color="#FF0000")
   await ctx.respond(emb, component=row, flags=hikari.MessageFlag.EPHEMERAL)
 

@@ -74,7 +74,7 @@ async def cmd(ctx):
         records.insert_one({
             'user_id': user.id,
             'citations': [{
-                'charges': charges,
+                'Charges': charges,
                 'Ticketed by': f"{prefix}<@{ctx.author.id}>",
                 'Department': ctx.options.dep,
                 'Amount due': f"Due: {due}"
@@ -101,7 +101,7 @@ async def cmd(ctx):
         await ctx.respond(embed=emb, flags=hikari.MessageFlag.EPHEMERAL)
         return
     upd = {
-      'charges': charges,
+      'Charges': charges,
       'Ticketed by': f"{prefix}<@{ctx.author.id}>",
       'Department': ctx.options.dep,
       'Amount due': f"Due: {due}"

@@ -13,7 +13,7 @@ client = MongoClient("mongodb+srv://brncray:Bobrien@bot.lvf7vud.mongodb.net/?ret
 @lightbulb.add_checks(
     lightbulb.has_roles(1203078168282406912)
 )
-@lightbulb.command('claim_license', 'claim your license', auto_defer=True)
+@lightbulb.command('claim_license', 'claim your license', auto_defer=False)
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
 async def cmd(ctx):
     db = client.get_database('data')
