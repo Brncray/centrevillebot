@@ -12,7 +12,7 @@ client = MongoClient("mongodb+srv://brncray:Bobrien@bot.lvf7vud.mongodb.net/?ret
 @plugin.command
 @lightbulb.option('id', 'The ID number is listed below the registed vehicle', type=int, required=True)
 @lightbulb.command('unregister', 'unregister a vehicle', auto_defer=True)
-@lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
+@lightbulb.implements(lightbulb.SlashCommand)
 async def cmd(ctx):
     db = client.get_database('data')
     license = None

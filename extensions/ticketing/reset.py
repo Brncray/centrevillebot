@@ -26,7 +26,7 @@ async def reset(ctx: flare.MessageContext, ) -> None:
 
 @plugin.command
 @lightbulb.command('reset', 'reset database', auto_defer=False)
-@lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
+@lightbulb.implements(lightbulb.SlashCommand)
 async def cmd(ctx):
   license = None
   row = await flare.Row(reset())

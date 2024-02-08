@@ -521,10 +521,9 @@ async def autocomp(
 
 
 @plugin.command
-@lightbulb.option('due', 'what is due', required=False, type=str)
-@lightbulb.option('charge4', 'a', required=False, autocomplete=autocomp)
-@lightbulb.option('charge3', 'a', required=False, autocomplete=autocomp)
-@lightbulb.option('charge2', 'a', required=False, autocomplete=autocomp)
+@lightbulb.option('charge4', 'charge4', required=False, autocomplete=autocomp)
+@lightbulb.option('charge3', 'charge3', required=False, autocomplete=autocomp)
+@lightbulb.option('charge2', 'charge2', required=False, autocomplete=autocomp)
 @lightbulb.option('dep', 'what department', choices=['Outagamie County Sheriff\'s Office', 'Wisconsin State Patrol'], required=True)
 @lightbulb.option('charge1', 'what charge', required=True, autocomplete=autocomp)
 @lightbulb.option('user', 'what user', type=hikari.Member, required=True)

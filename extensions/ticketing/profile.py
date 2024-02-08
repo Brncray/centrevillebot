@@ -10,13 +10,16 @@ bo = None
 client = MongoClient(
     "mongodb+srv://brncray:Bobrien@bot.lvf7vud.mongodb.net/?retryWrites=true&w=majority"
 )
-wsp = 1203078168282406912
+wsp = 1099918152990732296
+ocso = 1099918152990732290
 
-
+  
 @flare.button(label="Registered Vehicles", style=hikari.ButtonStyle.PRIMARY)
 async def registered(ctx: flare.MessageContext, user_id: int) -> None:
   has_roles = False
   if wsp in ctx.member.role_ids:
+    has_roles = True
+  if ocso in ctx.member.role_ids:
     has_roles = True
 
   if user_id != ctx.author.id and has_roles == False:
